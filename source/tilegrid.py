@@ -49,7 +49,8 @@ class TileGrid:
             for x in range(xvisible[0], xvisible[1]+1):
                 sprite = self.tilemap.getSprite(x, y)
                 posx = (x*tilewidth) + shift
-                posy = render.window.height - y*(tileheight/2)
+                posy = (render.window.height - self.tileDimensions[1])\
+                         - y*(tileheight/2)
                 spritepos = vectors.subtract([posx, posy], self.viewPosition)
                 sprite.set_position(spritepos[0], spritepos[1])
                 sprite.draw()
@@ -77,7 +78,7 @@ class TileGrid:
         lastVisibleHorizontally = (viewx + viewsizex) / tilewidth
         firstVisibleVertically = viewy / tileheight
         #add one because it works out that way...
-        lastVisibleVertically = ((viewy + viewsizey) / tileheight) + 1
+        lastVisibleVertically = (viewy + viewsizey) / (tileheight/2)
         #now we check if we've overshot the field completely
         if firstVisibleHorizontally > self.tilemap.mapDimensions[0] \
                 or firstVisibleVertically > self.tilemap.mapDimensions[1]:
