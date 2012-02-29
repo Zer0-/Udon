@@ -8,8 +8,11 @@ import os
 LOCALPATH = os.path.dirname(__file__)
 
 
-
 #Begin settings
+TEST_TILE = os.path.join(LOCALPATH, "../resources/test.png")
+
 DEBUG = True
 
 WINDOW_RESOLUTION = (800, 600) #(width, height)
+
+VSYNC = False
