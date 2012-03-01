@@ -4,6 +4,7 @@ import pyglet
 import config
 import tilegrid
 import tilemap
+import userinput
 
 """
 A disclaimer:
@@ -21,18 +22,19 @@ class maingame:
         self.fpslabel = pyglet.text.Label('',
                           font_name='Times New Roman',
                           font_size=12,
-                          x=render.window.width-100, y=render.window.height-12-3)
+                          x=render.window.width-50, y=render.window.height-12-3)
 
         self.tilegrid = tilegrid.TileGrid(config.WINDOW_RESOLUTION, tilemap.TileMap())
         render.renderstack.add(self.fpslabel)
         render.renderstack.add(self.tilegrid)
 
     def this_is_where_it_all_begins(self, dt):
-            self.fpslabel.text = str(pyglet.clock.get_fps())
+            self.fpslabel.text = "%.2f" % pyglet.clock.get_fps()
 
 if __name__ == "__main__":
     render.init()
     m = maingame()
-    pyglet.clock.set_fps_limit(100)
+    userinput.initEventHandlers(render.window, m)
+    pyglet.clock.set_fps_limit(30)
     pyglet.clock.schedule(m.this_is_where_it_all_begins)
     pyglet.app.run()

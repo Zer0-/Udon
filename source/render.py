@@ -22,7 +22,6 @@ def init():
     global renderstack
     init_window()
     renderstack = RenderStack()
-    init_objects()
     init_events()
 
 def init_events():
@@ -38,15 +37,6 @@ def init_window():
                                   caption="Udon",
                                   vsync=config.VSYNC
                                   )
-
-#test method, to be deleted
-def init_objects():
-    label = pyglet.text.Label('Hello, world',
-                          font_name='Times New Roman',
-                          font_size=12,
-                          x=3, y=window.height-12-3)
-    renderstack.add(label)
-    dprint("added new label to renderstack")
 
 #The main rendering function (not to be confused with the main loop)
 #This will only handle the graphics!

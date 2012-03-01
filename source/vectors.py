@@ -13,3 +13,7 @@ def addref(a, b):
     a[0] += b[0]
     a[1] += b[1]
     
+def subtractref(a, b):
+    """subtract b from a"""
+    a[0] -= b[0]
+    a[1] -= b[1]
