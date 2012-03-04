@@ -16,3 +16,5 @@ DEBUG = True
 WINDOW_RESOLUTION = (800, 600) #(width, height)
 
 VSYNC = False
+
+CAMERA_SPEED=5 #In pixels per frame
