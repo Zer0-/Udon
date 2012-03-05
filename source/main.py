@@ -6,6 +6,7 @@ import tilegrid
 import tilemap
 import userinput
 
+import sys
 """
 A disclaimer:
 From the pyglet docs:
@@ -42,6 +43,10 @@ class maingame:
         if (userinput.handlers.keyboardInputHandler.keys[pyglet.window.key.S]):
             self.tilegrid.move_view(0,config.CAMERA_SPEED)
 if __name__ == "__main__":
+    #the first argument passed to main.py is the map name, flags should
+    #designate this later
+    if (len(sys.argv)>1):
+        config.TEST_MAP = sys.argv[1]
     render.init()
     m = maingame()
     userinput.initEventHandlers(render.window, m)
