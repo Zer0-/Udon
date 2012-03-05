@@ -100,7 +100,7 @@ class TileGrid:
             return None
 
         lastVisibleHorizontally = ((viewx + viewsizex) / tilewidth)
-        lastVisibleVertically = (viewy + viewsizey)*2 / (tileheight)
+        lastVisibleVertically = (viewy + viewsizey) / (tileheight/2)
         #what if the map isn't even that big?
         if lastVisibleHorizontally > self.tilemap.mapDimensions[0]:
             lastVisibleHorizontally = self.tilemap.mapDimensions[0]
