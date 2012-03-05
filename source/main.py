@@ -24,7 +24,8 @@ class maingame:
                           font_size=12,
                           x=render.window.width-50, y=render.window.height-12-3)
 
-        self.tilegrid = tilegrid.TileGrid(config.WINDOW_RESOLUTION, tilemap.TileMap())
+        self.tilemap = tilemap.TileMap(config.TEST_MAP)
+        self.tilegrid = tilegrid.TileGrid(config.WINDOW_RESOLUTION, self.tilemap)
         render.renderstack.add(self.fpslabel)
         render.renderstack.add(self.tilegrid)
 

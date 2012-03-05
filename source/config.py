@@ -9,7 +9,10 @@ LOCALPATH = os.path.dirname(__file__)
 
 
 #Begin settings
-TEST_TILE = os.path.join(LOCALPATH, "../resources/test.png")
+TEST_MAP = "map1"
+
+MAPS_DIRECTORY = os.path.join(LOCALPATH, "../resources/maps/")
+MAP_METADATA_FILENAME = "metadata.json"
 
 DEBUG = True
 

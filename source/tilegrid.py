@@ -51,6 +51,8 @@ class TileGrid:
 
             for x in range(xvisible[0], xvisible[1]+1):
                 sprite = self.tilemap.getSprite(x, y)
+                if not sprite:
+                    continue
                 #*wrto == "with respect to"
                 spritePosX_wrto_map = (x*tilewidth) + shift
                 spritePosY_wrto_map = y*(tileheight/2)
