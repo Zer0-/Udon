@@ -12,7 +12,7 @@ class RenderStack:
         self.objects = []
 
     def add(self, something):
-        self.objects.append(something)
+        self.objects.insert(0, something)
 
     def draw(self):
         for i in self.objects:
