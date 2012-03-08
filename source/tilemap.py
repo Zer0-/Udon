@@ -15,14 +15,13 @@ class TileMap:
     def __init__(self, mapname):
         self.tileDimensions = None
         self.mapDimensions = (0, 0)
-        #color to sprite object map
-        self.map = {}
+        self.map = {} #color to sprite object map
         self.mapname = mapname
-        #pixel data
-        self.mapimage = None
+        self.mapimage = None #pixel data
         self.loadmap()
 
     def getSprite(self, x, y):
+        """return the sprite that goes in the given grid coordinates"""
         xm, ym = self.mapSprite(x, y)
         if xm > self.mapDimensions[0] \
                 or ym > self.mapDimensions[1] \
@@ -34,13 +33,14 @@ class TileMap:
         return self.map[color]
 
     def mapSprite(self, x, y):
+        #forumla for finding what tile goes in the given grid coordinates
         m = self.mapDimensions[0]
         ym = (y + 2*x - m)/2.0
         xm = 2*x - ((y + 2*x - m)/2.0)
         return round(xm), round(ym)
 
     def loadsprites(self, folder, meta):
-        """ Creates self.map, loads sprites into memory """
+        """ Creates color -> sprite map, loads sprites into memory """
         colorFilenamePairs = []
         colormap = meta["colormap"]
         for i in colormap.keys():
@@ -83,6 +83,5 @@ class TileMap:
                     
         meta, foldername = getMapInfo(self.mapname)
         self.tileDimensions = meta["tile_dimensions"]
-        print self.tileDimensions
         self.loadMapMap(os.path.join(foldername, "map.png"))
         self.loadsprites(foldername, meta)
