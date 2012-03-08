@@ -12,6 +12,7 @@ class TileGrid:
     def __init__(self, viewDimensions, tilemap):
         #the tilemap object is where we go to get our sprites
         self.tilemap = tilemap
+        self.scalefactor = 1
         #the following variables all have units in pixels
         self.tileDimensions = tilemap.tileDimensions
         self.mapDimensions = self.getMapDimensions(tilemap.mapDimensions)
@@ -19,6 +20,18 @@ class TileGrid:
         self.viewPosition = [0,0]
         self.rowshift = self.getRowShiftFn()
 
+    def scale(self, factor):
+        if abs(factor) < 0.0001:
+            factor = 0.1
+
+        if (abs(factor - 1) < 0.01):
+            factor = 1
+
+        self.scalefactor = factor
+        print self.scalefactor
+
+    def getTileDimensions(self):
+        return vectors.byscalar(self.scalefactor, self.tileDimensions)
 
     def getRowShiftFn(self):
         def even(n, row):
@@ -45,13 +58,12 @@ class TileGrid:
         """move the view to (newx, newy)"""
         self.viewPosition = newp
 
-    #TODO: use batch
     def draw(self):
         """Draws all visible tiles"""
         def adjustForStupidWindowCoordinates(y):
-            return render.window.height - self.tileDimensions[1] - y
+            return render.window.height - tileheight - y
 
-        tilewidth, tileheight = self.tileDimensions
+        tilewidth, tileheight = self.getTileDimensions()
         visiblearea = self.get_visible_area()
         if visiblearea == None:
             return
@@ -73,6 +85,7 @@ class TileGrid:
                 )
                 spritePosInWindow[1] = adjustForStupidWindowCoordinates(spritePosInWindow[1])
                 sprite.set_position(spritePosInWindow[0], spritePosInWindow[1])
+                sprite.scale = self.scalefactor
                 sprite.draw()
 
     def get_visible_area(self):
@@ -82,12 +95,9 @@ class TileGrid:
         viewx, viewy = self.viewPosition
         #print viewx, viewy
         viewsizex, viewsizey = self.viewDimensions
-        tilewidth, tileheight = self.tileDimensions
-        #Using floats here rather than ints will screw up the calculation
-        if DEBUG:
-            for i in [viewx, viewy, tilewidth, tileheight]:
-                if type(i) is not int:
-                    print "Warning: In get_visible_area something is a float"
+        tilewidth, tileheight = self.getTileDimensions()
+        tilewidth = int(tilewidth)
+        tileheight = int(tileheight)
 
         #first we should check if we're
         # too far back from the entire map to see anything

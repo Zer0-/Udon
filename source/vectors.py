@@ -17,3 +17,10 @@ def subtractref(a, b):
     """subtract b from a"""
     a[0] -= b[0]
     a[1] -= b[1]
+
+def byscalar(c, v):
+    return [v[0] * c, v[1]*c]
+
+def byscalar_ref(c, v):
+    v[0] = v[0] * c
+    v[1] = v[1] * c    

@@ -20,6 +20,7 @@ class mouseInputHandler:
         self.window.on_mouse_press = self.on_mouse_press
         self.window.on_mouse_motion = self.on_mouse_motion
         self.window.on_mouse_drag = self.on_mouse_drag
+        self.window.on_mouse_scroll = self.on_mouse_scroll
 
     def on_mouse_motion(self, x, y, dx, dy):
         pass
@@ -35,6 +36,14 @@ class mouseInputHandler:
         (dx, dy) = (-1, 0) -> dragged mouse left
         """
         self.dragGrid(dx, dy)
+
+    def on_mouse_scroll(self, x, y, sx, sy):
+        self.scale_view(sy+sx)
+
+    def scale_view(self, s):
+        scale = self.game.tilegrid.scalefactor
+        scale += s/20.0
+        self.game.tilegrid.scale(scale)
 
     def dragGrid(self, dx, dy):
         self.game.tilegrid.move_view(dx, dy)
