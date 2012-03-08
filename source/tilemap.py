@@ -23,10 +23,21 @@ class TileMap:
         self.loadmap()
 
     def getSprite(self, x, y):
-        color = self.mapimage[x, y]
+        xm, ym = self.mapSprite(x, y)
+        if xm > self.mapDimensions[0] \
+                or ym > self.mapDimensions[1] \
+                or xm < 0 or ym < 0:
+            return None
+        color = self.mapimage[xm, ym]
         if not color in self.map:
             return None
         return self.map[color]
+
+    def mapSprite(self, x, y):
+        m = self.mapDimensions[0]
+        ym = (y + 2*x - m)/2.0
+        xm = 2*x - ((y + 2*x - m)/2.0)
+        return round(xm), round(ym)
 
     def loadsprites(self, folder, meta):
         """ Creates self.map, loads sprites into memory """

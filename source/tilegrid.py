@@ -13,13 +13,29 @@ class TileGrid:
         #the tilemap object is where we go to get our sprites
         self.tilemap = tilemap
         #the following variables all have units in pixels
-        self.gridDimensions = [
-            tilemap.mapDimensions[0] * tilemap.tileDimensions[0],
-            tilemap.mapDimensions[1] * tilemap.tileDimensions[1]
-        ]
         self.tileDimensions = tilemap.tileDimensions
+        self.mapDimensions = self.getMapDimensions(tilemap.mapDimensions)
         self.viewDimensions = viewDimensions
         self.viewPosition = [0,0]
+        self.rowshift = self.getRowShiftFn()
+
+
+    def getRowShiftFn(self):
+        def even(n, row):
+            return (n - n*(row % 2))
+
+        def odd(n, row):
+            return n*(row % 2)
+
+        if self.tilemap.mapDimensions[0] % 2:
+            return even
+        else:
+            return odd
+
+    def getMapDimensions(self, mapDimensions):
+        w, h = mapDimensions
+        x = w + h
+        return (x, x)
 
     def move_view(self, dx, dy):
         """move the view over by specified number of pixels"""
@@ -34,9 +50,6 @@ class TileGrid:
         """Draws all visible tiles"""
         def adjustForStupidWindowCoordinates(y):
             return render.window.height - self.tileDimensions[1] - y
-            
-        def is_even(n):
-            return n%2 == 0
 
         tilewidth, tileheight = self.tileDimensions
         visiblearea = self.get_visible_area()
@@ -45,12 +58,10 @@ class TileGrid:
 
         xvisible, yvisible = visiblearea
         for y in range(yvisible[0], yvisible[1]+1):
-            shift = 0
-            if not is_even(y):
-                shift = tilewidth/2
+            shift = self.rowshift((tilewidth/2), y)
 
             for x in range(xvisible[0], xvisible[1]+1):
-                sprite = self.tilemap.getSprite(x, y)
+                sprite = self.tilemap.getSprite(x + self.rowshift(0.5, y), y)
                 if not sprite:
                     continue
                 #*wrto == "with respect to"
@@ -96,19 +107,19 @@ class TileGrid:
             firstVisibleVertically = (viewy*2 / (tileheight)) - 1
 
         #now we check if we've overshot the field completely
-        if firstVisibleHorizontally > self.tilemap.mapDimensions[0] \
-                or firstVisibleVertically > self.tilemap.mapDimensions[1]:
+        if firstVisibleHorizontally > self.mapDimensions[0] \
+                or firstVisibleVertically > self.mapDimensions[1]:
             dprint("You've overshot the field (too far down/right) to see anything")
             return None
 
         lastVisibleHorizontally = ((viewx + viewsizex) / tilewidth)
         lastVisibleVertically = (viewy + viewsizey) / (tileheight/2)
         #what if the map isn't even that big?
-        if lastVisibleHorizontally > self.tilemap.mapDimensions[0]:
-            lastVisibleHorizontally = self.tilemap.mapDimensions[0]
+        if lastVisibleHorizontally > self.mapDimensions[0]:
+            lastVisibleHorizontally = self.mapDimensions[0]
 
-        if lastVisibleVertically > self.tilemap.mapDimensions[1]:
-            lastVisibleVertically = self.tilemap.mapDimensions[1]
+        if lastVisibleVertically > self.mapDimensions[1]:
+            lastVisibleVertically = self.mapDimensions[1]
 
         return (
             (firstVisibleHorizontally, lastVisibleHorizontally),
